@@ -3,7 +3,6 @@ using UnityEngine;
 public class Raycast : MonoBehaviour
 {
     GameObject ball;
-    Rigidbody rigidbodyball;
     public Texture2D cursor;
     public GameObject cube;
     ballMovement ballMove;
@@ -11,7 +10,6 @@ public class Raycast : MonoBehaviour
     public int points = 30;
 
     public LineRenderer lineRenderer;
-    Vector3 lastMousePos;
     bool drag, CanMove;
     Vector3 velocity;
     void Start()
@@ -49,7 +47,6 @@ public class Raycast : MonoBehaviour
                     CanMove = true;
                     lineRenderer.enabled = true;
 
-                    Debug.Log("Raycast " + hit.collider.name + " " + hit.point);
                     Vector3 Target = hit.point;
                     Vector3 distance = Target - transform.position;
                     float height = Target.y + transform.position.y; //distance.y+distance.magnitude*0.25f; Debug.Log(""+hit.point.y + ball.transform.position.y);
