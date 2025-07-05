@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\New\Raycast.cs" />
-    <Compile Include="Assets\inputhandler.cs" />
     <Compile Include="Assets\Scripts\New\ballMovement.cs" />
   </ItemGroup>
   <ItemGroup>
