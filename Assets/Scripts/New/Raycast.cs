@@ -3,12 +3,8 @@ using UnityEngine;
 public class Raycast : MonoBehaviour
 {
     GameObject ball;
-    public Texture2D cursor;
-    public GameObject cube;
     ballMovement ballMove;
-
     public int points = 30;
-
     public LineRenderer lineRenderer;
     bool drag, CanMove;
     Vector3 velocity;
