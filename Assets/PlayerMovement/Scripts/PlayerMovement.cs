@@ -3,34 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : inputHandler
 {
-
-    public static PlayerMovement instance;
-    bool drag = false;
-    // Start is called before the first frame update
-    void Start()
-    {
-        instance = this;
-    }
-
+    public GameObject player;
+    CharacterController characterController;
+    bool drag;
+    Vector3 direction;
     // Update is called once per frame
-    void Update()
+
+    void Awake()
     {
-        if (drag)
+        characterController = player.GetComponent<CharacterController>();
+    }
+    void FixedUpdate()
+    {
+        if (drag && direction != Vector3.zero)
         {
-            transform.position += transform.forward * 0.1f;
+            characterController.Move(5f * Time.deltaTime * direction );
         }
     }
 
-    public void OnDrag(PointerEventData eventData)
+    public override void OnDrag(PointerEventData eventData)
     {
-        transform.Rotate(Vector3.up, eventData.delta.x, Space.Self);
-        drag = true;
+        if (eventData.position.x > Screen.width / 2)
+        {
+            drag = false;
+            direction = Vector3.zero;
+            player.transform.Rotate(Vector3.up, eventData.delta.x * 0.2f);
+        }
+        else if (eventData.position.x < Screen.width / 2)
+        {
+            drag = true;
+            direction = player.transform.TransformDirection( new Vector3(eventData.delta.x, 0, eventData.delta.y)).normalized; //player.transform.TransformDirection(new Vector3(eventData.delta.x, 0, eventData.delta.y)).normalized;
+        }
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public override void OnPointerUp(PointerEventData eventData)
     {
+        direction = Vector3.zero;
+        drag = false;
+    }
+
+    public override void OnPointerDown(PointerEventData eventData)
+    {
+        direction = Vector3.zero;
         drag = false;
     }
 }

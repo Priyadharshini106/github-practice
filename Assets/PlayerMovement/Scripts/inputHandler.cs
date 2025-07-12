@@ -5,21 +5,22 @@ using UnityEngine.EventSystems;
 
 public class inputHandler : MonoBehaviour,IPointerUpHandler,IPointerDownHandler,IDragHandler
 {
-    public void OnDrag(PointerEventData eventData)
+
+    public void Start()
     {
-        PlayerMovement.instance.OnDrag(eventData);
+    }
+    public virtual void OnDrag(PointerEventData eventData)
+    {
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public virtual void OnPointerDown(PointerEventData eventData)
     {
 
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public virtual void OnPointerUp(PointerEventData eventData)
     {
-        PlayerMovement.instance.OnPointerUp(eventData);
         
     }
-
     
 }
