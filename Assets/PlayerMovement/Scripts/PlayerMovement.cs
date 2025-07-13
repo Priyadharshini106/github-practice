@@ -1,52 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class PlayerMovement : inputHandler
+public class PlayerMovement : MonoBehaviour
 {
-    public GameObject player;
     CharacterController characterController;
-    bool drag;
-    Vector3 direction;
+    Animator PlayerAnim;
+    float MovementX, MovementY;
+    public float PlayerRotateSpeed;
+    Vector3 MoveDirection;
+    float currentX ,currentY= 0;
+    public float PlayerMoveSpeed;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        characterController = GetComponent<CharacterController>();
+        PlayerAnim = GetComponent<Animator>();
+        MovementX = PlayerAnim.GetFloat("MovementX");
+        MovementY = PlayerAnim.GetFloat("MovementY");
+    }
+
     // Update is called once per frame
-
-    void Awake()
+    void Update()
     {
-        characterController = player.GetComponent<CharacterController>();
-    }
-    void FixedUpdate()
-    {
-        if (drag && direction != Vector3.zero)
-        {
-            characterController.Move(5f * Time.deltaTime * direction );
-        }
+        PlayerMovementDir();
+        PlayerRotation();
     }
 
-    public override void OnDrag(PointerEventData eventData)
+    void PlayerRotation()
     {
-        if (eventData.position.x > Screen.width / 2)
-        {
-            drag = false;
-            direction = Vector3.zero;
-            player.transform.Rotate(Vector3.up, eventData.delta.x * 0.2f);
-        }
-        else if (eventData.position.x < Screen.width / 2)
-        {
-            drag = true;
-            direction = player.transform.TransformDirection( new Vector3(eventData.delta.x, 0, eventData.delta.y)).normalized; //player.transform.TransformDirection(new Vector3(eventData.delta.x, 0, eventData.delta.y)).normalized;
-        }
+        transform.Rotate(Vector3.up, Rotation.RotationDelta.x * PlayerRotateSpeed, Space.Self);
     }
-
-    public override void OnPointerUp(PointerEventData eventData)
+    void PlayerMovementDir()
     {
-        direction = Vector3.zero;
-        drag = false;
-    }
+        MovementX = Movement.direction.x;
+        MovementY = Movement.direction.y;
+        currentX = Mathf.Lerp(currentX, MovementX, Time.deltaTime *10f );
+        currentY = Mathf.Lerp(currentY, MovementY, Time.deltaTime *10f);
+        
+        PlayerAnim.SetFloat("MovementX", currentX);
+        PlayerAnim.SetFloat("MovementY", currentY);
 
-    public override void OnPointerDown(PointerEventData eventData)
-    {
-        direction = Vector3.zero;
-        drag = false;
+        MoveDirection = transform.TransformDirection(new Vector3(MovementX, 0, MovementY));
+        characterController.Move(PlayerMoveSpeed * MoveDirection);
     }
 }

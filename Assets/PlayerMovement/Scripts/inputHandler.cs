@@ -11,6 +11,7 @@ public class inputHandler : MonoBehaviour,IPointerUpHandler,IPointerDownHandler,
     }
     public virtual void OnDrag(PointerEventData eventData)
     {
+        
     }
 
     public virtual void OnPointerDown(PointerEventData eventData)
